@@ -26,6 +26,23 @@ const STORAGE_KEY = "vault_scholars_todo_tasks";
 // - Return an empty array if nothing is stored yet
 function loadTasks() {
   // TODO: Return parsed tasks from localStorage
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored === null){
+    return [];
+  }
+
+  try{
+    const parsed = JSON.parse(stored);
+
+    if (Array.isArray(parsed)){
+      return parsed;
+    }else{
+      return[];
+    }
+  }
+  catch(error){
+    console.error('Error parsing tasks from localStorage:', error);
+  }
 }
 
 
@@ -35,4 +52,7 @@ function loadTasks() {
 // - Save it to localStorage using STORAGE_KEY
 function saveTasks(tasks) {
   // TODO: Save tasks to localStorage
+  const JSON_string = JSON.stringify(tasks);
+
+  localStorage.setItem(STORAGE_KEY, JSON_string);
 }

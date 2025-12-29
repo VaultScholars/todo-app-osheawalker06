@@ -61,6 +61,18 @@ EXPECTED OUTPUT OF renderTasks():
 // - Show the empty state message when there are no tasks
 function renderTasks(tasks, listElement, emptyStateElement) {
   // TODO: Implement rendering logic
+  listElement.innerHTML = '';
+
+  if(!tasks || tasks.length === 0){
+    emptyStateElement.style.display = '';
+    return;
+  }
+  emptyStateElement.style.display = 'none';
+
+  tasks.forEach((task) => {
+    const li = createTaskElement(task);
+    listElement.appendChild(li); 
+  });
 }
 
 
@@ -72,6 +84,56 @@ function renderTasks(tasks, listElement, emptyStateElement) {
 // - NOT add event listeners (app.js will handle that)
 function createTaskElement(task) {
   // TODO: Implement element creation logic
+  const li = document.createElement('li');
+  li.classList.add('task-item');
+  li.dataset.id = task.id;
+
+  const leftDiv = document.createElement('div');
+  leftDiv.classList.add('task-item-left');
+
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.classList.add('task-checkbox');
+  checkbox.checked = !!task.completed;
+
+  const mainDiv = document.createElement('div');
+  mainDiv.classList.add('task-main');
+
+  const pTitle = document.createElement('p');
+  pTitle.classList.add('task-title');
+  pTitle.textContent = task.title;
+
+  mainDiv.appendChild(pTitle);
+
+  if (task.category || task.dueDate) {
+    const metaP = document.createElement('p');
+    metaP.classList.add('task-meta');
+
+    const parts = [];
+    if (task.category) parts.push(task.category);
+    if (task.dueDate) parts.push(task.dueDate);
+
+    metaP.textContent = parts.join(' • ');
+    mainDiv.appendChild(metaP);
+  }
+
+  leftDiv.appendChild(checkbox);
+  leftDiv.appendChild(mainDiv);
+
+  const actionsDiv = document.createElement('div');
+  actionsDiv.classList.add('task-actions');
+
+  const deleteButton = document.createElement('button');
+  deleteButton.type = 'button';
+  deleteButton.classList.add("task-delete-btn");
+  deleteButton.textContent = 'Delete';
+
+  actionsDiv.appendChild(deleteButton);
+
+  li.appendChild(leftDiv);
+  li.appendChild(actionsDiv);
+
+  return li;
 }
 
 
@@ -81,4 +143,10 @@ function createTaskElement(task) {
 // - Put focus back on the task title input
 function clearTaskForm(form) {
   // TODO: Reset the form and focus the title input
+  form.reset();
+
+  const titleInput = form.querySelector('#task-title');
+  if (titleInput){
+    titleInput.focus();
+  }
 }

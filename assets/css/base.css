@@ -4,12 +4,12 @@
 
 :root {
   --color-bg: #0f172a;          /* dark slate background */
-  --color-surface: #020617;     /* slightly darker card */
-  --color-surface-soft: #111827;
-  --color-accent: #38bdf8;      /* cyan */
-  --color-accent-soft: #0ea5e9;
-  --color-text: #e5e7eb;        /* light gray */
-  --color-text-muted: #9ca3af;  /* muted gray */
+  --color-surface: #e4add3;     /* slightly darker card */
+  --color-surface-soft: #ab6789;
+  --color-accent: #f079ca;      /* cyan */
+  --color-accent-soft: #fcd4ff;
+  --color-text: #937db1;        /* light gray */
+  --color-text-muted: #38918d;  /* muted gray */
   --color-danger: #f97373;
 
   --radius-sm: 0.4rem;
@@ -18,8 +18,7 @@
 
   --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.6);
 
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Segoe UI", sans-serif;
+  --font-sans: "Quicksand", system-ui, sans-serif;
 }
 
 *,
@@ -32,14 +31,24 @@ html,
 body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
+
+  background-image: url("../images/Vault_Background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+
+  font-family: var(--font-sans);
+  color: var(--color-text);
 }
 
-body {
+/*body {
   min-height: 100vh;
   font-family: var(--font-sans);
   background: radial-gradient(circle at top, #1d4ed8 0, #020617 45%, #020617 100%);
   color: var(--color-text);
-}
+}*/
 
 /* Typography helpers */
 

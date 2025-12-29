@@ -19,7 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // - Show tasks on the page
   // TODO: Load tasks and render them
 
+  tasks = loadTasks();
 
+  if (tasks.length > 0){
+    const maxId = tasks.reduce(
+      (max, task) => (task.id > max ? task.id : max),
+      tasks[0].id    
+    );
+    nextTaskId = maxId + 1;
+  }
+
+  renderTasks(tasks, taskList, emptyState);
 
   // When the user submits the form to add a task:
   form.addEventListener("submit", (event) => {
@@ -27,12 +37,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // What should happen here:
     // - Read values from the form (title, category, due date)
+    
+    const titleElement = document.getElementById("task-title");
+    const categoryElement = document.getElementById("task-category");
+    const dueDateElement = document.getElementById("task-due-date");
+
+    const title = titleElement.value.trim();
+    const category = categoryElement.value.trim();
+    const dueDate = dueDateElement.value;
+
     // - Validate that the title is not empty
+
+    if (!title) {
+      return;
+    }
     // - Create a new task object
+    const newTask = {
+      id: nextTaskId++,
+      title: title,
+      category: category || null,
+      dueDate: dueDate || null,
+      completed: false,
+    };
+
     // - Add it to the tasks array
+    tasks.push(newTask);
+
     // - Save updated tasks to localStorage
+    saveTasks(tasks);
+
     // - Update the page to show the new task
+    renderTasks(tasks, taskList, emptyState);
+
     // - Clear the form
+    clearTaskForm(form);
+
     // TODO: Add a new task
   });
 
@@ -54,8 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // - Save updated tasks
       // - Update the page
       // TODO: Toggle completed state
-      return;
-    }
+        tasks = tasks.map((task) => 
+          task.id === taskId ? {...task, completed: !task.completed }: task);
+        saveTasks(tasks);
+        renderTasks(tasks, taskList, emptyState);
+        return;
+      }
+     
 
     // If the delete button was clicked:
     if (target.classList.contains("task-delete-btn")) {
@@ -64,7 +108,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // - Save updated tasks
       // - Update the page
       // TODO: Delete the task
-      return;
-    }
-  });
+        tasks = tasks.filter((task) => task.id !== taskId);
+        saveTasks(tasks);
+        renderTasks(tasks, taskList, emptyState);
+        return;
+      }
+   });
 });
